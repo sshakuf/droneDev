@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Drone Commander</title>
+  <meta name="description" content="DroneCommander">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+  <!--<script src="js/scripts.js"></script>-->
+   <script>
+        //Usually, you put script-tags into the head
+        function myFunction(url) {
+            //This performs a POST-Request.
+            //Use "$.get();" in order to perform a GET-Request (you have to take a look in the rest-API-documentation, if you're unsure what you need)
+            //The Browser downloads the webpage from the given url, and returns the data.
+            $.post( url, function( data ) {
+                 //As soon as the browser finished downloading, this function is called.
+                 $('#demo').html(data);
+            });
+        }
+
+        function xhr_(url, elementId){
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == xhr.DONE) {           
+                    var resptxt = xhr.responseText;
+
+                    if (resptxt) {
+                        document.getElementById(elementId).innerHTML = resptxt;
+                    } else {
+                        document.getElementById(elementId).innerHTML = "no response";
+                    }
+                }
+            }
+
+            xhr.open("GET", url, true);
+            xhr.send();
+        }
+    </script>
+
+  <button class="button" onclick="xhr_('http://localhost:8080/pins/1/1'), 'texthtm'" width="200" height="200" >Point 1</button>
+<button class="button" onclick="xhr_('http://localhost:8080/pins/1/2'), 'texthtm'">Point 2</button>
+<button class="button" onclick="xhr_('http://localhost:8080/location'), 'texthtm'">Location</button>
+<div id="texthtm"></div>
+</body>
+</html>
+
+
+
