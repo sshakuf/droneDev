@@ -1,12 +1,24 @@
 
 
- var map;
+ var map, droneMarker;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -34.397, lng: 150.644},
-    zoom: 8
-    });
+    zoom: 18
+});
+    droneMarker = new google.maps.Marker({
+            position: map.getCenter(),
+            icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10
+            },
+            draggable: true,
+            map: map
+        });
+
+    droneMarker.setMap(map);
+        
 }
 
 
@@ -69,12 +81,17 @@ function getLocation(){
     {
         fxhr_('http://localhost:8080/location', function(resp){
             parseLocation(resp)
+            // refreshRate = 1000;
         }, function (err)
         {
+            // refreshRate = 5000;
             //alert(err)
         });
     }
 }
+
+
+var refreshRate = 2000;
 
 function parseLocation(loc){
     all = loc.substring(loc.indexOf(':') + 1);
@@ -87,7 +104,6 @@ function parseLocation(loc){
     $('#txtLON').val(lon);
     $('#txtALT').val(alt);
 
-    map.setCenter(new google.maps.LatLng(lat, lon));
     console.log('location updated: lat:' + lat + ", lon:" + lon)
     if ($('.linkindicator').hasClass('linkon')){
             $('.linkindicator').removeClass('linkon');
@@ -96,8 +112,18 @@ function parseLocation(loc){
             $('.linkindicator').addClass('linkon');
         }
 
+    droneMarker.setPosition( new google.maps.LatLng(lat, lon));
+    map.panTo(new google.maps.LatLng(lat, lon));
+
+
+
+
+
 }
+
+
+
 setInterval(getLocation
-, 5000);
+, refreshRate);
 
 
