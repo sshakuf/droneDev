@@ -1,5 +1,6 @@
 import RestEngine
 import DataStore
+import DroneLogic
 
 from dronekit import connect, VehicleMode, LocationGlobalRelative
 # import GotoControl
@@ -46,23 +47,56 @@ def R_pins(args):
     header = RestEngine.createHeader(content)
     return header, content
 
-def R_location(args):
-    print('in R_location')
-    print (args)
+def getlocation():
     c =""
 
     # Print location information for `vehicle` in all frames (default printer)
-    c = "<p>" + c +  "Global Location: " +  str(DataStore.vehicle.location.global_frame) + "</p>"
-    c = "<p>" + c +  "Global Location (relative altitude): %s" + str(DataStore.vehicle.location.global_relative_frame) + "</p>"
-    c = "<p>" + c +  "Local Location: %s" + str(DataStore.vehicle.location.local_frame)  + "</p>"   #NED
+    # c = "<p>" + c +  "Global Location: " +  str(DataStore.vehicle.location.global_frame) + "</p>"
+    # c = "<p>" + c +  "Global Location (relative altitude): %s" + str(DataStore.vehicle.location.global_relative_frame) + "</p>"
+    # c = "<p>" + c +  "Local Location: %s" + str(DataStore.vehicle.location.local_frame)  + "</p>"   #NED
 
-    # Print altitudes in the different frames (see class definitions for other available information)
-    c = "<p>" + c +  "Altitude (global frame): %s" + str(DataStore.vehicle.location.global_frame.alt) + "</p>"
-    c = "<p>" + c +  "Altitude (global relative frame): %s" + str(DataStore.vehicle.location.global_relative_frame.alt) + "</p>"
-    c = "<p>" + c +  "Altitude (NED frame): %s" + str(DataStore.vehicle.location.local_frame.down) + "</p>"
+    # # Print altitudes in the different frames (see class definitions for other available information)
+    # c = "<p>" + c +  "Altitude (global frame): %s" + str(DataStore.vehicle.location.global_frame.alt) + "</p>"
+    # c = "<p>" + c +  "Altitude (global relative frame): %s" + str(DataStore.vehicle.location.global_relative_frame.alt) + "</p>"
+    # c = "<p>" + c +  "Altitude (NED frame): %s" + str(DataStore.vehicle.location.local_frame.down) + "</p>"
+    c = str(DataStore.vehicle.location.global_relative_frame)
+
+    return c
+    
+
+def R_location(args):
+    print('in R_location')
+    print (args)
+
+    c = getlocation()
 
     content = RestEngine.CreateHTML(c)
     header = RestEngine.createHeader(content)
     return header, content
 
+def R_takeoff(args):
+    print('in R_location')
+    print (args)
+
+    DroneLogic.arm_and_takeoff(5)
+
+    c = getlocation()
+
+    content = RestEngine.CreateHTML(c)
+    header = RestEngine.createHeader(content)
+    return header, content
+
+def R_goto(args):
+    print('in R_location')
+    print (args)
+
+    if len(args)>=2:
+        DroneLogic.goto(int(args[0]), int(args[1]))
+
+
+    c = getlocation()
+
+    content = RestEngine.CreateHTML(c)
+    header = RestEngine.createHeader(content)
+    return header, content
 

@@ -17,47 +17,45 @@
 
 <body>
     <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-
-  <!--<script src="js/scripts.js"></script>-->
-   <script>
-        //Usually, you put script-tags into the head
-        function myFunction(url) {
-            //This performs a POST-Request.
-            //Use "$.get();" in order to perform a GET-Request (you have to take a look in the rest-API-documentation, if you're unsure what you need)
-            //The Browser downloads the webpage from the given url, and returns the data.
-            $.post( url, function( data ) {
-                 //As soon as the browser finished downloading, this function is called.
-                 $('#demo').html(data);
-            });
-        }
-
-        function xhr_(url, elementId){
-            var xhr = new XMLHttpRequest();
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == xhr.DONE) {           
-                    var resptxt = xhr.responseText;
-
-                    if (resptxt) {
-                        document.getElementById(elementId).innerHTML = resptxt;
-                    } else {
-                        document.getElementById(elementId).innerHTML = "no response";
-                    }
-                }
-            }
-
-            xhr.open("GET", url, true);
-            xhr.send();
-        }
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
     </script>
 
-  <button class="button" onclick="xhr_('http://localhost:8080/pins/1/1'), 'texthtm'" width="200" height="200" >Point 1</button>
-<button class="button" onclick="xhr_('http://localhost:8080/pins/1/2'), 'texthtm'">Point 2</button>
-<button class="button" onclick="xhr_('http://localhost:8080/location'), 'texthtm'">Location</button>
-<div id="texthtm"></div>
+    <script src="js/DroneCommander.js"></script>
+    <span>
+        <div class='linkindicator linkon'></div>
+        <button class="button" onclick="xhr_('http://localhost:8080/takeoff', 'texthtm')" width="200" height="200" >takeoff</button>
+        <!--<button class="button" onclick="xhr_('http://localhost:8080/pins/1/1', 'texthtm')" width="200" height="200" >Point 1</button>-->
+        <!--<button class="button" onclick="xhr_('http://localhost:8080/pins/1/2', 'texthtm')">Point 2</button>-->
+        
+    </span>
+    <p>
+        <button class="button" onclick="xhr_('http://localhost:8080/goto/' + getMeters() + '/0/0', 'texthtm')">North</button>
+        <button class="button" onclick="xhr_('http://localhost:8080/goto/-' + getMeters() + '/0/0', 'texthtm')">South</button>
+        <button class="button" onclick="xhr_('http://localhost:8080/goto/0/' + getMeters() + '/0', 'texthtm')">East</button>
+        <button class="button" onclick="xhr_('http://localhost:8080/goto/0/-' + getMeters() + '/0', 'texthtm')">West</button>
+        <input id="textMeters" type="number" value='1' >meters</input>
+    </p>
+    <p>
+        <input type="checkbox" id='isRuning' checked="checked">Runing</input>
+        <p>
+        <label class="lbl">LAT <input id="txtLAT" type="number" value='1' ></input></label>
+        <label class="lbl">LON <input id="txtLON" type="number" value='1' ></input></label>
+        <label class="lbl">ALT <input id="txtALT" type="number" value='1' ></input></label>
+        <button class="button" onclick="getLocation()">Location</button>
+        </p>
+    </p>
+
+
+    <div id="map"></div>
+        <script>
+       
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKWzHJZIILGJduYRuBDM5eO9VgJh7dK8s&callback=initMap"
+        async defer></script>
+    <div id="texthtm"></div>
+
 </body>
 </html>
 

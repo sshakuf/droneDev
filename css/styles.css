@@ -1,11 +1,55 @@
 
 .button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
+    background: #6e747d;
+  background-image: -webkit-linear-gradient(top, #6e747d, #161d21);
+  background-image: -moz-linear-gradient(top, #6e747d, #161d21);
+  background-image: -ms-linear-gradient(top, #6e747d, #161d21);
+  background-image: -o-linear-gradient(top, #6e747d, #161d21);
+  background-image: linear-gradient(to bottom, #6e747d, #161d21);
+  -webkit-border-radius: 8;
+  -moz-border-radius: 8;
+  border-radius: 8px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.lbl {
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    
+}
+
+.linkindicator{
+    width:16px;
+    height: 8px;
+    background:black;
+}
+
+
+.linkon{
+    background:green;
+}
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+#map {
+height: 75%;
+width: 100%;
+}
+
+#textMeters{
+width:20pt;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+height: 100%;
+margin: 8;
+padding: 0;
+    background: #badee6;
+
 }

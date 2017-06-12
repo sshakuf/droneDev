@@ -126,6 +126,10 @@ def parse_request(text):
                         func = RestEngine.Gethandler(command, 'get')
                         if (func != None):
                                 header, content = func(pinnum)
+                        else:   #no get function call default
+                                func = RestEngine.Gethandler(command, 'default')
+                                if (func != None):
+                                        header, content = func(args)
                 elif len(args) == 2:
                     pinnum, success = intTryParse(args[0])
                     if success:
@@ -134,6 +138,11 @@ def parse_request(text):
                             func = RestEngine.Gethandler(command, 'set')
                             if (func != None):
                                     header, content = func(pinnum, pinval)
+                            else: #no get function call default
+                                func = RestEngine.Gethandler(command, 'default')
+                                if (func != None):
+                                        header, content = func(args)
+
                 else:  #Default answer
                     func = RestEngine.Gethandler(command, 'default')
                     if (func != None):
