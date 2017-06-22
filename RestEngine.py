@@ -12,8 +12,8 @@ def AddRestEndPoint(inCommand, inHandler, inGet=None, inSet=None):
 
 def Gethandler(inCommand, action):
     if inCommand in commands:
-        if commands[inCommand][action] == None:
-            return commands[inCommand]['default']
+        # if commands[inCommand][action] == None:
+        #     return commands[inCommand]['default']
         
         return commands[inCommand][action]
     return None

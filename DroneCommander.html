@@ -25,27 +25,47 @@
     <script src="js/DroneCommander.js"></script>
     <span>
         <div class='linkindicator linkon'></div>
-        <button class="button" onclick="xhr_('http://localhost:8080/takeoff', 'texthtm')" width="200" height="200" >takeoff</button>
         <!--<button class="button" onclick="xhr_('http://localhost:8080/pins/1/1', 'texthtm')" width="200" height="200" >Point 1</button>-->
         <!--<button class="button" onclick="xhr_('http://localhost:8080/pins/1/2', 'texthtm')">Point 2</button>-->
         
     </span>
-    <p>
-        <button class="button" onclick="xhr_('http://localhost:8080/goto/' + getMeters() + '/0/0', 'texthtm')">North</button>
-        <button class="button" onclick="xhr_('http://localhost:8080/goto/-' + getMeters() + '/0/0', 'texthtm')">South</button>
-        <button class="button" onclick="xhr_('http://localhost:8080/goto/0/' + getMeters() + '/0', 'texthtm')">East</button>
-        <button class="button" onclick="xhr_('http://localhost:8080/goto/0/-' + getMeters() + '/0', 'texthtm')">West</button>
-        <input id="textMeters" type="number" value='1' >meters</input>
-    </p>
-    <p>
+    <section class="flex-container" >
+        <button class="button flex1" onclick="xhr_('http://localhost:8080/takeoff', 'texthtm')" width="200" height="200" >takeoff</button>
+
+        <button class="button flex1" onclick="xhr_('http://localhost:8080/goto/' + getMeters() + '/0/0', 'texthtm')">North</button>
+        <button class="button flex1" onclick="xhr_('http://localhost:8080/goto/-' + getMeters() + '/0/0', 'texthtm')">South</button>
+        <button class="button flex1" onclick="xhr_('http://localhost:8080/goto/0/' + getMeters() + '/0', 'texthtm')">East</button>
+        <button class="button flex1" onclick="xhr_('http://localhost:8080/goto/0/-' + getMeters() + '/0', 'texthtm')">West</button>
+        <input id="textMeters" type="number" value='10' >meters</input>
+        <!--<button class="button" onclick="xhr_('http://localhost:8080/alt/' + getAlt(), 'texthtm')">Alt</button>
+        <input id="textAlt" type="number" value='10' >meters</input>-->
+    </section>
+    <section class="flex-container ">
+            <section class="flex-vertical  flex2 ">
+        <button class="button" onclick="xhr_('http://localhost:8080/mode/LAND', 'texthtm')">Land</button>
+        <button class="button" onclick="xhr_('http://localhost:8080/mode/ALT_HOLD', 'texthtm')">Alt Hold</button>
+        <button class="button" onclick="xhr_('http://localhost:8080/mode/POS_HOLD', 'texthtm')">Pos Hold</button>
+        <!--<button class="button" onclick="xhr_('http://localhost:8080/mode/ALT_HOLD', 'texthtm')">Land</button>-->
+        </section>
+        <section class="flex-container ">
+            <section class="flex-vertical joystick flex2">
+                <input id="joy3" type="range" class="vertical" min="1000" max="2000" value="1500" orient=vertical oninput="updateJoystick(this.id, value)" onchange="this.value=1500; updateJoystick(this.id, this.value);"></input>
+                <input id="joy4" type="range" min="1000" max="2000" value="1500" oninput="updateJoystick(this.id, value)" onchange="this.value=1500; updateJoystick(this.id, this.value);"></input>
+            </section>
+            <section class="flex-vertical joystick flex2">
+                <input id="joy2" type="range" class="vertical"min="1000" max="2000" value="1500" oninput="updateJoystick(this.id, value)" onchange="this.value=1500; updateJoystick(this.id, this.value);"></input>
+                <input id="joy1" type="range" min="1000" max="2000" value="1500" oninput="updateJoystick(this.id, value)" onchange="this.value=1500; updateJoystick(this.id, this.value);"></input>
+            </section>
+        </section>
+        <button class="button" onclick="xhr_('http://localhost:8080/joystickclear', 'texthtm')">Clear Joustick</button>
+    </section>
+    <section class="flex-container">
         <input type="checkbox" id='isRuning' checked="checked">Runing</input>
-        <p>
         <label class="lbl">LAT <input id="txtLAT" type="number" value='1' ></input></label>
         <label class="lbl">LON <input id="txtLON" type="number" value='1' ></input></label>
         <label class="lbl">ALT <input id="txtALT" type="number" value='1' ></input></label>
         <button class="button" onclick="getLocation()">Location</button>
-        </p>
-    </p>
+    </section>
 
 
     <div id="map"></div>

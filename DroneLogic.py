@@ -6,6 +6,12 @@ import math
 import DataStore
 
 
+def setSpeed(speed):
+    DataStore.vehicle.airspeed = speed
+
+def getSpeed():
+    return DataStore.vehicle.airspeed
+
 def arm_and_takeoff(aTargetAltitude):
     """
     Arms vehicle and fly to aTargetAltitude.

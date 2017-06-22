@@ -117,33 +117,29 @@ def parse_request(text):
                     args = []
                     command  = filename
 
-
+                handled = False
                 if len(args) == 1:
                     #check that we have a valid pin number
-                    pinnum, success = intTryParse(args[0])
-                    if success:
-                        #return onth the state of this pecific pin
-                        func = RestEngine.Gethandler(command, 'get')
-                        if (func != None):
-                                header, content = func(pinnum)
-                        else:   #no get function call default
-                                func = RestEngine.Gethandler(command, 'default')
-                                if (func != None):
-                                        header, content = func(args)
-                elif len(args) == 2:
-                    pinnum, success = intTryParse(args[0])
-                    if success:
-                        pinval, success = intTryParse(args[1])
+                    func = RestEngine.Gethandler(command, 'get')
+                    if (func != None):
+                        pinnum, success = intTryParse(args[0])
+                        handled = True
                         if success:
-                            func = RestEngine.Gethandler(command, 'set')
-                            if (func != None):
-                                    header, content = func(pinnum, pinval)
-                            else: #no get function call default
-                                func = RestEngine.Gethandler(command, 'default')
-                                if (func != None):
-                                        header, content = func(args)
-
-                else:  #Default answer
+                            header, content = func(pinnum)
+                        else:
+                            header, content = func(args[0])
+                elif len(args) == 2:
+                    func = RestEngine.Gethandler(command, 'set')
+                    if (func != None):
+                        handled = True
+                        pinnum, success = intTryParse(args[0])
+                        pinval, success1 = intTryParse(args[1])
+                        if success and success1:
+                                header, content = func(pinnum, pinval)
+                        else:
+                                header, content = func(args[0], args[1])
+                            
+                if handled == False:  #Default answer
                     func = RestEngine.Gethandler(command, 'default')
                     if (func != None):
                             header, content = func(args)

@@ -31,17 +31,18 @@ sitl = None
 
 
 # Start SITL if no connection string specified
-if not connection_string:
-    import dronekit_sitl
-    sitl = dronekit_sitl.start_default()
-    connection_string = sitl.connection_string()
+# if not connection_string:
+#     import dronekit_sitl
+#     sitl = dronekit_sitl.start_default()
+#     connection_string = sitl.connection_string()
 
 connection_string = "udp:127.0.0.1:14551"  #SImulation
 #connection_string = "tcp:192.168.4.1:23"  #ESP
 
 # Connect to the Vehicle
 print('Connecting to vehicle on: %s' % connection_string)
-vehicle = connect(connection_string, wait_ready=True)
+# vehicle = connect(connection_string, wait_ready=True)
+vehicle = connect(connection_string, wait_ready=False)
 
 DataStore.vehicle = vehicle
 import DroneLogic
@@ -64,8 +65,12 @@ def arm_and_takeoff(aTargetAltitude):
     vehicle.armed = True
 
     # Confirm vehicle armed before attempting to take off
+    count = 0
     while not vehicle.armed:
         print(" Waiting for arming...")
+        count = count +1
+        if count > 10:
+            return
         time.sleep(1)
 
     print("Taking off!")
@@ -74,48 +79,22 @@ def arm_and_takeoff(aTargetAltitude):
     # Wait until the vehicle reaches a safe height before processing the goto
     #  (otherwise the command after Vehicle.simple_takeoff will execute
     #   immediately).
-    while True:
-        print(" Altitude: ", vehicle.location.global_relative_frame.alt)
-        # Break and return from function just below target altitude.
-        if vehicle.location.global_relative_frame.alt >= aTargetAltitude * 0.95:
-            print("Reached target altitude")
-            break
-        time.sleep(1)
+    # while True:
+    #     print(" Altitude: ", vehicle.location.global_relative_frame.alt)
+    #     # Break and return from function just below target altitude.
+    #     if vehicle.location.global_relative_frame.alt >= aTargetAltitude * 0.95:
+    #         print("Reached target altitude")
+    #         break
+    #     time.sleep(1)
 
 
 #arm_and_takeoff(10)
 
 print("Set default/target airspeed to 3")
-vehicle.airspeed = 3
-
+vehicle.airspeed = 5
 
 import Server
 thread.start_new_thread(Server.run, ())
-
-# print("Going towards first point for 30 seconds ...")
-# point1 = LocationGlobalRelative(-35.361354, 149.165218, 20)
-# vehicle.simple_goto(point1)
-
-# # sleep so we can see the change in map
-# time.sleep(30)
-
-# print("Going towards second point for 30 seconds (groundspeed set to 10 m/s) ...")
-# point2 = LocationGlobalRelative(-35.363244, 149.168801, 20)
-# vehicle.simple_goto(point2, groundspeed=10)
-
-# # sleep so we can see the change in map
-# time.sleep(30)
-
-# print("Returning to Launch")
-# vehicle.mode = VehicleMode("RTL")
-
-# # Close vehicle object before exiting script
-# print("Close vehicle object")
-# vehicle.close()
-
-# # Shut down simulator if it was started.
-# if sitl:
-#     sitl.stop()
 
 while True:
     time.sleep(10)

@@ -74,6 +74,9 @@ function xhr_(url, elementId){
 function getMeters(){
     return document.getElementById("textMeters").value;
 }
+function getAlt(){
+    return document.getElementById("textAlt").value;
+}
 
 
 function getLocation(){
@@ -91,7 +94,8 @@ function getLocation(){
 }
 
 
-var refreshRate = 2000;
+var refreshRate = 1000;
+var oldLocation  = [0,0];
 
 function parseLocation(loc){
     all = loc.substring(loc.indexOf(':') + 1);
@@ -115,13 +119,38 @@ function parseLocation(loc){
     droneMarker.setPosition( new google.maps.LatLng(lat, lon));
     map.panTo(new google.maps.LatLng(lat, lon));
 
+    if (oldLocation[0] == 0) {
+        oldLocation = [parseFloat(lat), parseFloat(lon)];
+    }
+
+    if ((oldLocation[0] - lat) > 0.0000001 || (oldLocation[1] - lon) > 0.0000001){
+
+        var line = new google.maps.Polyline({
+            path: [
+                new google.maps.LatLng(oldLocation[0],oldLocation[1]), 
+                new google.maps.LatLng(parseFloat(lat), parseFloat(lon))
+            ],
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 10,
+            map: map
+        });
+    oldLocation = [parseFloat(lat), parseFloat(lon)];
+    }
+
 
 
 
 
 }
 
-
+function updateJoystick(id, val)
+{
+    //$('#'+o)
+    // s = 'http://localhost:8080/joystick/' + id[3] + '/' + val;
+    // console.debug(s);
+    xhr_('http://localhost:8080/joystick/' + id[3] + '/' + val, 'texthtm')
+}
 
 setInterval(getLocation
 , refreshRate);
